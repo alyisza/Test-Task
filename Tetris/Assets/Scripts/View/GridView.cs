@@ -18,7 +18,20 @@ namespace Game
             blockArray = new GameObject[size, size];
         }
 
-        public void EnableBlocks(List<Index> indexes)
+        #region Show and Colour Block Methods
+        /// <summary>
+        /// Create or show blocks at the shape position
+        /// </summary>
+        /// <param name="worldPositions"></param>
+        /// <param name="color"></param>
+        public void ShowBlocks(List<Vector3> worldPositions, Color color)
+        {
+            List<Index> indexList = ConvertWorldPosToIndex(worldPositions);
+            EnableBlocks(indexList);
+            ColourBlocks(indexList, color);
+        }
+
+        private void EnableBlocks(List<Index> indexes)
         {
             indexes.ForEach(index =>EnableBlock(index));
         }
@@ -55,6 +68,7 @@ namespace Game
             }
             block.GetComponent<SpriteRenderer>().color = color;
         }
+        #endregion
 
         /// <summary>
         /// Get block world position that calculate form grid BoxCollider2D
@@ -108,5 +122,59 @@ namespace Game
                 }
             }
         }
+
+        public List<Index> ConvertWorldPosToIndex(List<Vector3> worldPosList)
+        {
+            List<Index> indexPosition = new List<Index>();
+            worldPosList.ForEach(
+                pos=>indexPosition.Add(new Index(GetXGridPosition(pos.x), 
+                GetYGridPosition(pos.y))));
+            return indexPosition;
+        }
+
+        private int GetXGridPosition(float xWorldPos)
+        {
+            BoxCollider2D collider = GetComponent<BoxCollider2D>();
+            float gridWorldSize = collider.size.x;
+            float startPoint = transform.position.x - gridWorldSize / 2f; 
+            float blockScale = gridWorldSize / size;
+            List<float> blockPositions = new List<float>();
+            for (int i = 0; i < size; i++)
+                blockPositions.Add(startPoint + (i + .5f) * blockScale);
+            int indexX = 0;
+            float minDistance = Mathf.Abs(xWorldPos - blockPositions[0]);
+            for(int x = 1; x < size; x++)
+            {
+                if(Mathf.Abs(xWorldPos - blockPositions[x]) < minDistance)
+                {
+                    indexX = x;
+                    minDistance = Mathf.Abs(xWorldPos - blockPositions[x]);
+                }
+            }
+            return indexX;
+        }
+
+        private int GetYGridPosition(float yWorldPos)
+        {
+            BoxCollider2D collider = GetComponent<BoxCollider2D>();
+            float gridWorldSize = collider.size.y;
+            float startPoint = transform.position.y - gridWorldSize / 2f;
+            float blockScale = gridWorldSize / size;
+            List<float> blockPositions = new List<float>();
+            for (int i = 0; i < size; i++)
+                blockPositions.Add(startPoint + (i + .5f) * blockScale);
+            int indexY = 0;
+            float minDistance = Mathf.Abs(yWorldPos - blockPositions[0]);
+            for (int y = 1; y < size; y++)
+            {
+                if (Mathf.Abs(yWorldPos - blockPositions[y]) < minDistance)
+                {
+                    indexY = y;
+                    minDistance = Mathf.Abs(yWorldPos - blockPositions[y]);
+                }
+            }
+            return indexY;
+        }
+
     }
 }
