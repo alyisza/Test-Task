@@ -96,14 +96,13 @@ namespace Game
             int raycastLayer = gridLayer | blockLayer;
             RaycastHit2D hit;
             hit = Physics2D.Raycast(transf.position, Vector2.zero, distance: 3f, layerMask: raycastLayer);
-
             if (hit.collider == null)
                 return false;
             return (1 << hit.collider.gameObject.layer == gridLayer);
         }
         #endregion
 
-        /// <summary>
+    /// <summary>
     /// Shape in bool array: occuipied cell - true, empty - false;
     /// </summary>
     /// <returns></returns>

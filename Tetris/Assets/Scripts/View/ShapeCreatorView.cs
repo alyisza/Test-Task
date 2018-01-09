@@ -15,7 +15,7 @@ namespace Game
         [Header("Shape values")]
         public LayerMask GridLayer;
         public LayerMask BlockLayer;
-        public Vector3 StartSize = Vector3.zero;
+        public Vector3 StartSize = Vector3.one;
         public Vector3 OnBoardSize = new Vector3(1.38f, 1.38f, 1f);
 
         private float[] rotation = new float[] { 0f, 90f, 180f, 270f };
@@ -31,7 +31,18 @@ namespace Game
                     return;
             }
             ClearShapes();
-            for(int i = 0; i < PointsArray.Length; i++)
+            CreateShapes();
+        }
+
+        public void Reset()
+        {
+            ClearShapes();
+            CreateShapes();
+        }
+
+        private void CreateShapes()
+        {
+            for (int i = 0; i < PointsArray.Length; i++)
             {
                 Vector3 position = PointsArray[i].position;
                 CreateShape(position);

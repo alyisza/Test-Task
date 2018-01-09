@@ -9,6 +9,8 @@ namespace Game
     [RequireComponent(typeof(BoxCollider2D))]
     public class GridView : EventView
     {
+        public int ScoreForRow = 100;
+
         public int size = 10;
         public GameObject blockPrefab;
         GameObject[,] blockArray;

@@ -43,7 +43,7 @@ namespace Game
 
         private void resetShapes()
         {
-            view.UpdateShapes();
+            view.Reset();
         }
 
         private void upgradeShapes(ShapeView shape)

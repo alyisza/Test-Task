@@ -30,17 +30,20 @@ namespace Game
         protected override void mapBindings()
         {
             injectionBinder.Bind<IGrid>().To<GridModel>().ToSingleton();
+            injectionBinder.Bind<IScore>().To<ScoreModel>().ToSingleton();
 
             injectionBinder.Bind<PutShapeSignal>().ToSingleton();
             injectionBinder.Bind<ResetGameSignal>().ToSingleton();
             injectionBinder.Bind<GameOverSignal>().ToSingleton();
             injectionBinder.Bind<AfterUpdateSignal>().ToSingleton();
+            injectionBinder.Bind<AddScoreSignal>().ToSingleton();
 
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
             commandBinder.Bind<CheckGameOverSignal>().To<CheckGameOverCommand>();
 
             mediationBinder.Bind<GridView>().To<GridMediator>();
             mediationBinder.Bind<ShapeCreatorView>().To<ShapeCreatorMediator>();
+            mediationBinder.Bind<UIManagerView>().To<UIManagerMediator>();
 
 
         }

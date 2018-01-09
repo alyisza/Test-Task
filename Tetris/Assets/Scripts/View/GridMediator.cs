@@ -23,6 +23,9 @@ namespace Game
         [Inject]
         public AfterUpdateSignal afterUpdateSignal { get; set; }
 
+        [Inject]
+        public AddScoreSignal addScoreSignal { get; set; }
+
         public override void OnRegister()
         {
             view.Init();
@@ -55,8 +58,10 @@ namespace Game
 
         private IEnumerator CheckGrid()
         {
-            if (grid.CheckRowsAndColumns() > 0)
+            int deletedRows = grid.CheckRowsAndColumns();
+            if (deletedRows > 0)
             {
+                addScoreSignal.Dispatch(deletedRows * view.ScoreForRow);
                 yield return new WaitForSeconds(.1f);
                 view.UpdateGrid(grid.GridArray);           
             }
