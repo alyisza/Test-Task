@@ -111,7 +111,7 @@ namespace Game
             }
         }
 
-        public void ClearGrid()
+        public void Reset()
         {
             for(int x = 0; x < size; x++)
             {

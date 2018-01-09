@@ -15,17 +15,33 @@ namespace Game
         {
         }
 
-
         public GameContext(MonoBehaviour view, bool autoStartup) : base(view, autoStartup)
         { }
+
+        // Override Start so that we can fire the StartSignal 
+        override public IContext Start()
+        {
+            base.Start();
+            StartSignal startSignal = (StartSignal)injectionBinder.GetInstance<StartSignal>();
+            startSignal.Dispatch();
+            return this;
+        }
 
         protected override void mapBindings()
         {
             injectionBinder.Bind<IGrid>().To<GridModel>().ToSingleton();
-          
-            mediationBinder.Bind<GridView>().To<GridMediator>();
 
             injectionBinder.Bind<PutShapeSignal>().ToSingleton();
+            injectionBinder.Bind<ResetGameSignal>().ToSingleton();
+            injectionBinder.Bind<GameOverSignal>().ToSingleton();
+            injectionBinder.Bind<AfterUpdateSignal>().ToSingleton();
+
+            commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
+            commandBinder.Bind<CheckGameOverSignal>().To<CheckGameOverCommand>();
+
+            mediationBinder.Bind<GridView>().To<GridMediator>();
+            mediationBinder.Bind<ShapeCreatorView>().To<ShapeCreatorMediator>();
+
 
         }
     }

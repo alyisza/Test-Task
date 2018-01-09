@@ -12,11 +12,11 @@ namespace Game
     public class ShapeView : EventView, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         private const string blockNameInHierarchy = "Block";
-        public Vector3 startSize = Vector3.zero;
-        public Vector3 dragSize = new Vector3(1.38f, 1.38f, 1f);
+        private Vector3 startSize;
+        private Vector3 dragSize;
         private Vector3 startDragPosition;
-        public string GridLayerName = "Grid";
-        public string BlockLayerName = "GridBlock";
+        private LayerMask gridLayer;
+        private LayerMask blockLayer;
 
         [Inject]
         public PutShapeSignal putShapeSignal { get; set; }
@@ -25,9 +25,19 @@ namespace Game
         /// </summary>
         void PutOnBoard()
         {
-            putShapeSignal.Dispatch(this);
             gameObject.SetActive(false);
+            putShapeSignal.Dispatch(this);
         }
+
+        public void SetData(Vector3 startSize, Vector3 onBoardSize,
+            LayerMask gridLayer, LayerMask boardBlockLayer)
+        {
+            this.startSize = startSize;
+            this.dragSize = onBoardSize;
+            this.gridLayer = gridLayer;
+            this.blockLayer = boardBlockLayer;
+        }
+
 
         public Color GetShapeColor()
         {
@@ -59,7 +69,7 @@ namespace Game
             if (!IsValidShapePosition())
             {
                 transform.position = startDragPosition;
-                transform.localScale = Vector3.one;
+                transform.localScale = startSize;
             }
             else
             {
@@ -83,15 +93,13 @@ namespace Game
 
         bool IsValidTransformPosition(Transform transf)
         {
-            int GridLayer = 1<< LayerMask.NameToLayer(GridLayerName);
-            int BlockLayer = 1<<LayerMask.NameToLayer(BlockLayerName);
-            int raycastLayer = GridLayer | BlockLayer;
+            int raycastLayer = gridLayer | blockLayer;
             RaycastHit2D hit;
             hit = Physics2D.Raycast(transf.position, Vector2.zero, distance: 3f, layerMask: raycastLayer);
 
             if (hit.collider == null)
                 return false;
-            return (1 << hit.collider.gameObject.layer == GridLayer);
+            return (1 << hit.collider.gameObject.layer == gridLayer);
         }
         #endregion
 

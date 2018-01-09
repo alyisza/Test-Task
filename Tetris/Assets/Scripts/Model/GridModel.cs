@@ -86,6 +86,48 @@ public class GridModel : IGrid {
         this._size = size;
         _gridArray = new bool[size, size];
     }
+    /// <summary>
+    /// return count of destroyed
+    /// </summary>
+    /// <returns></returns>
+    public int CheckRowsAndColumns()
+    {
+        int count = 0;
+        for(int y = 0; y < Size; y++)
+        {
+            bool fill = true;
+            for(int x = 0; x < Size; x++)
+            {
+                if (GridArray[x, y] == false)
+                {
+                    fill = false;
+                    break;
+                }
+            }
+            if (fill)
+            {
+                DeleteRow(y);
+                count++;
+            }
+        }
 
-    
+        for (int x = 0; x < Size; x++)
+        {
+            bool fill = true;
+            for (int y = 0; y < Size; y++)
+            {
+                if (GridArray[x, y] == false)
+                {
+                    fill = false;
+                    break;
+                }
+            }
+            if (fill)
+            {
+                DeleteColumn(x);
+                count++;
+            }
+        }
+        return count;
+    }
 }

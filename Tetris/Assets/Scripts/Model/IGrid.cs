@@ -14,4 +14,5 @@ public interface IGrid {
     void DeleteColumn(int columnId);
     void AddShape(List<Index> indexList);
     bool CheckAvailabilityForShape(bool[,] shapeInBoolArray);
+    int CheckRowsAndColumns();//return count of destroyed
 }
