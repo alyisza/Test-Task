@@ -53,8 +53,8 @@ public class GridModel : IGrid {
 
     private bool CheckAvailabilityInGridPart(bool[,] shapeInBoolArray, Index startIndex)
     {
-        if (startIndex.x + shapeInBoolArray.GetLength(0) - 1 > Size 
-            || startIndex.y + shapeInBoolArray.GetLength(1) - 1 > Size)
+        if (startIndex.x + shapeInBoolArray.GetLength(0) > Size 
+            || startIndex.y + shapeInBoolArray.GetLength(1) > Size)
             return false; 
 
         for(int x = 0; x < shapeInBoolArray.GetLength(0); x++)

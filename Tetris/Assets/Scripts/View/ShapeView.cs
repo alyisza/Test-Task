@@ -20,6 +20,10 @@ namespace Game
 
         [Inject]
         public PutShapeSignal putShapeSignal { get; set; }
+        [Inject]
+        public ClickShapeSignal clickShapeSignal { get; set; }
+        [Inject]
+        public DropShapeSignal dropShapeSignal { get; set; }
         /// <summary>
         /// Call signal notifies that a shape is added at the board
         /// </summary>
@@ -51,6 +55,7 @@ namespace Game
         {
             startDragPosition = transform.position;
             transform.localScale = dragSize;
+            clickShapeSignal.Dispatch();
         }
         #endregion
 
@@ -75,6 +80,7 @@ namespace Game
             {
                 PutOnBoard();
             }
+            dropShapeSignal.Dispatch();
         }
         #endregion
 

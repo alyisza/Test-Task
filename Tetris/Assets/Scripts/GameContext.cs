@@ -37,6 +37,8 @@ namespace Game
             injectionBinder.Bind<GameOverSignal>().ToSingleton();
             injectionBinder.Bind<AfterUpdateSignal>().ToSingleton();
             injectionBinder.Bind<AddScoreSignal>().ToSingleton();
+            injectionBinder.Bind<ClickShapeSignal>().ToSingleton();
+            injectionBinder.Bind<DropShapeSignal>().ToSingleton();
 
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
             commandBinder.Bind<CheckGameOverSignal>().To<CheckGameOverCommand>();
@@ -44,7 +46,7 @@ namespace Game
             mediationBinder.Bind<GridView>().To<GridMediator>();
             mediationBinder.Bind<ShapeCreatorView>().To<ShapeCreatorMediator>();
             mediationBinder.Bind<UIManagerView>().To<UIManagerMediator>();
-
+            mediationBinder.Bind<AudioManagerView>().To<AudioManagerMediator>();
 
         }
     }

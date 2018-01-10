@@ -5,8 +5,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PutShapeSignal : Signal<ShapeView>
+    public class DropShapeSignal : Signal
     {
-
     }
 }
