@@ -9,7 +9,7 @@ using strange.extensions.mediation.api;
 
 namespace Game
 {
-    public class ShapeView : EventView, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class ShapeView : EventView, IClickable
     {
         private const string blockNameInHierarchy = "Block";
         private Vector3 startSize;
@@ -49,27 +49,22 @@ namespace Game
                 GetComponent<SpriteRenderer>().color;
             return color;
         }
-
-        #region IBeginDragHandler implementation 
-        public void OnBeginDrag(PointerEventData eventData)
+        #region IClickable implementation
+        public void OnBeginDrag()
         {
             startDragPosition = transform.position;
             transform.localScale = dragSize;
             clickShapeSignal.Dispatch();
         }
-        #endregion
 
-        #region IDragHandler implementation
-        public void OnDrag(PointerEventData eventData)
+        public void OnDrag(Vector2 inputPoint)
         {
-            Vector3 mousePosToWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosToWorldPos = Camera.main.ScreenToWorldPoint(inputPoint);
             mousePosToWorldPos.z = 0;
             transform.position = mousePosToWorldPos;
         }
-        #endregion
 
-        #region IEndDragHandler implementation
-        public void OnEndDrag(PointerEventData eventData)
+        public void OnEndDrag()
         {
             if (!IsValidShapePosition())
             {
@@ -190,5 +185,7 @@ namespace Game
             }
             return positionsList;
         }
+
+        
     }
 }
